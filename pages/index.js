@@ -89,6 +89,11 @@ function Results({ country, albumID }) {
                   <Badge colorScheme={album.collectionPrice ? "green" : "red"}>
                     Buy on iTunes Store
                   </Badge>
+                  {album.collectionPrice && (
+                    <Text>
+                      {album.collectionPrice} {album.currency}
+                    </Text>
+                  )}
                 </VStack>
               );
             })}
