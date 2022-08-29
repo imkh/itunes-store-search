@@ -22,7 +22,13 @@ import { SearchIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import countries from "../data/countries.js";
 
 function Results({ country, idType, searchQuery }) {
-  const albumID = searchQuery;
+  let albumID = searchQuery;
+
+  const regex = /https:\/\/music\.apple\.com\/(.+)\/album\/(.+)\/([^\?]+)/;
+  const match = searchQuery.match(regex)
+  if (match) {
+    albumID = match[3];
+  }
 
   const { data, error } = useSWR(
     `https://itunes.apple.com/lookup?country=${country.code}&lang=en&${idType}=${albumID}&entity=song&limit=200`
