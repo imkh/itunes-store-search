@@ -42,7 +42,10 @@ function Results({ country, albumID }) {
       </HStack>
       <Divider />
       {data.resultCount === 0 ? (
-        <div>Not Found</div>
+        <VStack>
+          <div style={{fontSize: "xxx-large"}}>⊗</div>
+          <div>Not Found</div>
+        </VStack>
       ) : (
         <>
           <Text>
@@ -145,6 +148,7 @@ export default function Home() {
               onKeyDown={handleKeyDown}
             />
           </InputGroup>
+          <br />
           {searchQuery && (
             <HStack
               spacing={32}
