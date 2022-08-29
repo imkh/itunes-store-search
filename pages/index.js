@@ -21,9 +21,11 @@ import { SearchIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 import countries from "../data/countries.js";
 
-function Results({ country, albumID }) {
+function Results({ country, idType, searchQuery }) {
+  const albumID = searchQuery;
+
   const { data, error } = useSWR(
-    `https://itunes.apple.com/lookup?country=${country.code}&lang=en&id=${albumID}&entity=song&limit=200`
+    `https://itunes.apple.com/lookup?country=${country.code}&lang=en&${idType}=${albumID}&entity=song&limit=200`
   );
 
   if (error) return <div>Failed to load</div>;
@@ -38,7 +40,7 @@ function Results({ country, albumID }) {
     <VStack spacing={4}>
       <HStack>
         <Text>{country.emoji}</Text>
-        <Text>{country.name}</Text>
+        <Text>{country.name} ({idType.toUpperCase()})</Text>
       </HStack>
       <Divider />
       {data.resultCount === 0 ? (
@@ -155,11 +157,20 @@ export default function Home() {
               divider={<StackDivider borderColor="gray.200" />}
             >
               {selectedCountries.map((country) => (
-                <Results
-                  key={country.code}
-                  country={country}
-                  albumID={searchQuery}
-                />
+                <VStack spacing={8} divider={<StackDivider borderColor="gray.200" />}>
+                  <Results
+                    key={country.code}
+                    country={country}
+                    idType="id"
+                    searchQuery={searchQuery}
+                  />
+                  <Results
+                    key={country.code}
+                    country={country}
+                    idType="upc"
+                    searchQuery={searchQuery}
+                  />
+                </VStack>
               ))}
             </HStack>
           )}
